@@ -1,0 +1,22 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+from sklearn.manifold import TSNE
+from sklearn.cluster import KMeans, DBSCAN
+
+df = pd.read_csv("/data/ecommerce_rfm_data.csv")
+
+clean_data = StandardScaler().fit_transform(df)
+
+clean_data = StandardScaler().fit_transform(df)
+
+df['KMeans_Group'] = KMeans(n_clusters=4, random_state=42).fit_predict(clean_data)
+df['DBSCAN_Group'] = DBSCAN(eps=0.5, min_samples=10).fit_predict(clean_data)
+
+plt.figure(figsize=(8, 6))
+plt.scatter(tsne_data[:, 0], tsne_data[:, 1], c=df['KMeans_Group'], cmap='viridis')
+plt.title("Customer Map (4 Groups)")
+plt.show()
+
+print(df.groupby('KMeans_Group').mean().round(2))
